@@ -1,0 +1,21 @@
+{
+  "name": "macro-flow-calorie-tracker",
+  "version": "1.0.0",
+  "description": "Mobile-first calorie and macronutrient nutrition tracker with SVG gauges, meal timeline, and water hydration logger",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/runner.js",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "calorie-tracker",
+    "macro-tracker",
+    "nutrition",
+    "mobile-app",
+    "pwa",
+    "fitness",
+    "diet"
+  ],
+  "author": "Yeamin Sheikh <yeaminsheikh12@gmail.com>",
+  "license": "MIT"
+}
