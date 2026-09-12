@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Primary -->
+    <color name="primary">#10B981</color>
+    <color name="primary_dark">#059669</color>
+    <color name="primary_light">#D1FAE5</color>
+    <color name="accent">#06B6D4</color>
+
+    <!-- Macronutrient Color System -->
+    <color name="macro_protein">#3B82F6</color>
+    <color name="macro_carb">#F59E0B</color>
+    <color name="macro_fat">#EC4899</color>
+    <color name="macro_water">#06B6D4</color>
+    <color name="calories_flame">#F97316</color>
+
+    <!-- Surfaces & Neutrals -->
+    <color name="background_light">#F8FAFC</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_tertiary">#94A3B8</color>
+    <color name="divider_color">#E2E8F0</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>

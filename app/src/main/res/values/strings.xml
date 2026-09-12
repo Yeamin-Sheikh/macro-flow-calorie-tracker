@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Information -->
+    <string name="app_name">MacroFlow Calorie Tracker</string>
+    <string name="title_add_food">Log Food &amp; Nutrition</string>
+    <string name="title_daily_log">Nutrition History</string>
+    <string name="title_profile_goals">Profile, TDEE &amp; Macro Goals</string>
+
+    <!-- Dashboard Strings -->
+    <string name="calories_remaining">%1$d kcal remaining</string>
+    <string name="calories_consumed_target">%1$d / %2$d kcal</string>
+    <string name="protein_stat">Protein: %1$dg / %2$dg</string>
+    <string name="carbs_stat">Carbs: %1$dg / %2$dg</string>
+    <string name="fats_stat">Fats: %1$dg / %2$dg</string>
+    <string name="water_intake_label">Daily Water Intake</string>
+    <string name="water_progress">%1$d / %2$d ml</string>
+    <string name="btn_add_water">+250 ml</string>
+
+    <!-- Meals -->
+    <string name="meal_breakfast">Breakfast</string>
+    <string name="meal_lunch">Lunch</string>
+    <string name="meal_dinner">Dinner</string>
+    <string name="meal_snacks">Snacks</string>
+
+    <!-- Log Food Form -->
+    <string name="search_food_hint">Search food (e.g. Chicken breast, Oats, Eggs)...</string>
+    <string name="custom_food_header">Or create custom meal item</string>
+    <string name="hint_food_name">Food Name</string>
+    <string name="hint_servings">Number of Servings</string>
+    <string name="hint_serving_size">Serving Unit (e.g., 100g, 1 cup)</string>
+    <string name="hint_calories">Calories (kcal)</string>
+    <string name="hint_protein">Protein (g)</string>
+    <string name="hint_carbs">Carbohydrates (g)</string>
+    <string name="hint_fat">Total Fat (g)</string>
+    <string name="btn_log_item">Add to Daily Log</string>
+
+    <!-- Profile & Goals -->
+    <string name="label_age">Age (years)</string>
+    <string name="label_gender">Gender</string>
+    <string name="label_height">Height (cm)</string>
+    <string name="label_weight">Weight (kg)</string>
+    <string name="label_activity_level">Activity Level</string>
+    <string name="label_goal">Primary Goal</string>
+    <string name="btn_calculate_goals">Calculate &amp; Save Macro Targets</string>
+
+    <!-- Menu -->
+    <string name="menu_history">Daily History</string>
+    <string name="menu_goals">Macro Goals</string>
+    <string name="menu_reset_day">Clear Today's Logs</string>
+    <string name="confirm_reset_day">Reset all food and water logged for today?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+</resources>

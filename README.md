@@ -1,76 +1,79 @@
-# MacroFlow calorie tracker mobile app
+# MacroFlow Calorie Tracker (Native Android App)
 
-A mobile-first progressive web application for tracking daily calorie consumption, macronutrient targets (protein, carbs, fat), and hydration.
+Native Android application for tracking daily calories, macronutrient distributions (Protein, Carbohydrates, Fats), and water hydration targets.
 
-## Overview
+Built with Java, AndroidX, Material Design 3, and a local SQLite nutrition database.
 
-MacroFlow provides an interactive nutrition dashboard with SVG ring progress meters, meal diary logging, and a built-in database of whole foods.
+## Features
 
-## Key features
+- **Daily Energy Dashboard:** Visual progress tracking for daily target calories with real-time remaining calorie computation.
+- **Macronutrient Tri-Split Bars:** Independent progress indicators for daily Protein, Carbohydrate, and Fat targets in grams and percentages.
+- **Hydration Water Counter:** Single-tap logging (+250 ml increments) with daily target water progress.
+- **Verified Preloaded Nutrition Database:** Instant search across staples (chicken breast, oats, eggs, avocado, salmon, sweet potato, whey protein, etc.) with pre-calculated macros.
+- **Custom Food and Meal Builder:** Log custom home-cooked meals by specifying serving size, calories, protein, carbs, and fat.
+- **Mifflin-St Jeor TDEE & Macro Calculator:** Built-in metabolic calculator based on user age, gender, height, weight, activity level, and fitness goal (Cut, Maintain, Bulk). Automatically sets optimal calorie targets and protein allocations.
+- **Historical Daily Logs:** Browse meal history and macro totals by date.
+- **Local SQLite Engine:** Zero external login or network dependency. All records persist locally on-device.
 
-- **Dynamic calorie ring gauge:** Displays calories consumed, daily goal, and remaining budget with animated circular SVG stroke-dashoffset transitions.
-- **Macronutrient split dials:** Monitors daily protein, carbohydrate, and dietary fat intake against customizable nutritional targets.
-- **Curated chef meals showcase:** High-resolution meal cards with 1-click batch logging (Macro Fuel Power Bowl, Berry Protein Super Oats).
-- **Meal timeline logging:** Categorizes meals into Breakfast, Lunch, Dinner, and Snacks with individual meal calorie counters.
-- **Verified food database:** Includes standard macro values for staple proteins, whole grains, and healthy fats.
-- **Custom food entry:** Log meals by inputting custom calories, protein, carbs, and fat values.
-- **Water intake tracker:** One-tap +250ml glass buttons to track daily fluid hydration towards a 2,500 ml target.
-- **Dual viewport simulation:** Switch between an interactive mobile mockup frame with Dynamic Island and a fullscreen desktop layout.
-- **Context menu support:** Custom right-click menu with Cut, Copy, Paste, and Select All.
-- **Configuration persistence:** `config.json` stores daily calorie goals, macro splits, and user preferences.
-
-## Project structure
+## Project Structure
 
 ```
 macro-flow-calorie-tracker/
-├── assets/
-│   ├── images/
-│   │   ├── hero.jpg
-│   │   ├── meal-healthy-bowl.jpg
-│   │   └── meal-berry-oatmeal.jpg
-│   └── svgs/
-│       ├── logo.svg
-│       └── icons.svg
-├── css/
-│   ├── main.css
-│   └── components.css
-├── js/
-│   ├── app.js
-│   ├── calculator.js
-│   ├── database.js
-│   └── tracker-store.js
-├── tests/
-│   └── runner.js
-├── config.json
-├── index.html
-├── package.json
-└── README.md
+├── app/
+│   ├── build.gradle                       # Module build settings and dependencies
+│   ├── proguard-rules.pro                 # Proguard optimization rules
+│   └── src/main/
+│       ├── AndroidManifest.xml            # Application manifest and activity declarations
+│       ├── java/com/yeaminsheikh/macroflow/
+│       │   ├── MainActivity.java          # Dashboard, macro progress bars, water counter, meal list
+│       │   ├── AddFoodActivity.java       # Food search library & custom recipe logger
+│       │   ├── DailyLogActivity.java      # Historical daily nutrition logs
+│       │   ├── ProfileGoalsActivity.java  # TDEE & macro goals calculator
+│       │   ├── adapters/                  # RecyclerView adapters for meals and food search
+│       │   ├── database/MacroDatabaseHelper.java # Local SQLite schema, seeds, queries
+│       │   ├── models/                    # Data models (FoodItem, MealLogEntry, UserProfile)
+│       │   └── utils/                     # CalorieCalculator & PreferenceManager
+│       └── res/
+│           ├── drawable/                  # Vector icons, flame, water drop, and macro pills
+│           ├── layout/                    # Activity and list item XML layouts
+│           ├── values/                    # Colors, strings, dimens, and Material themes
+│           └── mipmap-anydpi-v26/         # Adaptive launcher icons
+├── gradle/wrapper/                        # Gradle 8.5 wrapper distribution
+├── build.gradle                           # Top-level Gradle script
+├── settings.gradle                        # Project settings
+├── config.json                            # Local project configuration
+└── tests/verify_android_app.py            # Automated structure and logic verification suite
 ```
 
-## Running locally
+## Requirements
 
-Serve with Python or Node:
+- Android Studio Hedgehog (2023.1.1) or newer
+- JDK 17
+- Android SDK 34 (compileSdk 34, minSdk 24, targetSdk 34)
 
-```powershell
-# Using Python
-python -m http.server 8000
+## How to Build and Run
 
-# Or using Node
-npm start
+### Option 1: Android Studio (Recommended)
+1. Open Android Studio.
+2. Select **File > Open** and choose the `macro-flow-calorie-tracker` directory.
+3. Allow Gradle to sync dependencies.
+4. Select a connected device or Android Virtual Device (API 24+).
+5. Click **Run** (or press Shift + F10).
+
+### Option 2: Command Line (Gradle Wrapper)
+```bash
+# Debug APK compilation
+./gradlew assembleDebug
+
+# Run unit tests
+./gradlew test
 ```
+The compiled APK will be located at `app/build/outputs/apk/debug/app-debug.apk`.
 
-Visit `http://localhost:8000` in your web browser.
+## Running Verification Tests
 
-## Running tests
+Run the built-in test suite to verify XML layouts, manifest bindings, Mifflin-St Jeor algorithms, and Gradle build settings:
 
-Execute the verification tests with Node:
-
-```powershell
-npm test
-# or
-node tests/runner.js
+```bash
+python tests/verify_android_app.py
 ```
-
-## License
-
-MIT License.
