@@ -95,7 +95,7 @@ public class MacroDatabaseHelper extends SQLiteOpenHelper {
 
         String createWater = "CREATE TABLE " + TABLE_WATER + " ("
                 + COL_WATER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_WATER_DATE + " TEXT NOT NULL, "
+                + COL_WATER_DATE + " TEXT UNIQUE NOT NULL, "
                 + COL_WATER_ML + " INTEGER NOT NULL"
                 + ");";
         db.execSQL(createWater);
@@ -332,7 +332,13 @@ public class MacroDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COL_WATER_DATE, date);
         cv.put(COL_WATER_ML, newTotal);
 
-        if (current == 0) {
+        Cursor cursor = db.rawQuery("SELECT " + COL_WATER_ID + " FROM " + TABLE_WATER + " WHERE " + COL_WATER_DATE + " = ?", new String[]{date});
+        boolean exists = (cursor != null && cursor.moveToFirst());
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        if (!exists) {
             db.insert(TABLE_WATER, null, cv);
         } else {
             db.update(TABLE_WATER, cv, COL_WATER_DATE + " = ?", new String[]{date});

@@ -105,7 +105,7 @@ def test_mifflin_st_jeor_calculator():
     print("✓ Fitness science metabolic and macronutrient algorithms verified!")
 
 def test_gradle_configuration():
-    print("Verifying Gradle build scripts and SDK versions...")
+    print("Verifying Gradle build scripts, wrapper binary, and SDK versions...")
     app_gradle = os.path.join(REPO_DIR, "app", "build.gradle")
     with open(app_gradle, "r", encoding="utf-8") as f:
         content = f.read()
@@ -114,7 +114,23 @@ def test_gradle_configuration():
         assert "targetSdk 34" in content
         assert "com.yeaminsheikh.macroflow" in content
         assert "androidx.recyclerview:recyclerview" in content
-    print("✓ Gradle configuration verified!")
+    
+    # Assert wrapper jar exists and is valid binary
+    wrapper_jar = os.path.join(REPO_DIR, "gradle", "wrapper", "gradle-wrapper.jar")
+    assert os.path.exists(wrapper_jar), "gradle-wrapper.jar is missing from gradle/wrapper/"
+    assert os.path.getsize(wrapper_jar) > 30000, f"gradle-wrapper.jar appears corrupt: {os.path.getsize(wrapper_jar)} bytes"
+    
+    # Assert no residual root web assets remain
+    root_assets = os.path.join(REPO_DIR, "assets")
+    assert not os.path.exists(root_assets), "Residual root assets/ directory should not exist in Android app"
+    
+    # Assert SQLite schema uniqueness on water table
+    db_file = os.path.join(REPO_DIR, "app", "src", "main", "java", "com", "yeaminsheikh", "macroflow", "database", "MacroDatabaseHelper.java")
+    with open(db_file, "r", encoding="utf-8") as df:
+        db_content = df.read()
+        assert 'COL_WATER_DATE + " TEXT UNIQUE NOT NULL,' in db_content, "Missing UNIQUE constraint on water_intake table"
+    
+    print("✓ Gradle configuration, wrapper jar, and database schema verified!")
 
 if __name__ == "__main__":
     print("=== RUNNING MACROFLOW CALORIE TRACKER ANDROID VERIFICATION ===")
