@@ -75,14 +75,14 @@ assert.strictEqual(totalsFinal.consumed.calories, totalsBefore.consumed.calories
 console.log('✓ Food item removal verified');
 
 // Test 6: Image assets verification
-const imagesDir = path.resolve('assets/images');
+const imagesDir = path.resolve(import.meta.dirname, '../assets/images');
 assert.ok(fs.existsSync(path.join(imagesDir, 'hero.jpg')), 'hero.jpg must exist');
 assert.ok(fs.existsSync(path.join(imagesDir, 'meal-healthy-bowl.jpg')), 'meal-healthy-bowl.jpg must exist');
 assert.ok(fs.existsSync(path.join(imagesDir, 'meal-berry-oatmeal.jpg')), 'meal-berry-oatmeal.jpg must exist');
 console.log('✓ High-resolution food and meal photography assets verified');
 
 // Test 7: Config validation
-const configPath = path.resolve('config.json');
+const configPath = path.resolve(import.meta.dirname, '../config.json');
 assert.ok(fs.existsSync(configPath), 'config.json must exist');
 const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 assert.strictEqual(config.appName, 'MacroFlow Mobile');
