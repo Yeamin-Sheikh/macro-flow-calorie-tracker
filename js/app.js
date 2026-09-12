@@ -1,5 +1,5 @@
 import { TrackerStore } from './tracker-store.js';
-import { foodDatabase } from './database.js';
+import { foodDatabase, featuredMeals } from './database.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const store = new TrackerStore();
@@ -28,7 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const foodSelectEl = document.getElementById('food-select');
   const foodForm = document.getElementById('food-form');
 
-  // Populate Food Options
+  const featuredModal = document.getElementById('featured-modal');
+  const openFeaturedModalBtn = document.getElementById('open-featured-modal-btn');
+  const featuredMealsContainer = document.getElementById('featured-meals-container');
+
+  // Populate Food Options in Custom Log Modal
   if (foodSelectEl) {
     foodSelectEl.innerHTML = `
       <option value="">-- Or Choose Verified Food --</option>
@@ -45,6 +49,50 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('input-food-protein').value = selected.protein;
         document.getElementById('input-food-carbs').value = selected.carbs;
         document.getElementById('input-food-fat').value = selected.fat;
+      }
+    });
+  }
+
+  // Populate Curated Featured Meals with High-Resolution Photography
+  if (featuredMealsContainer) {
+    featuredMealsContainer.innerHTML = featuredMeals.map(meal => `
+      <div class="featured-meal-card" data-id="${meal.id}">
+        <img src="assets/images/${meal.image}" alt="${meal.name}" class="featured-meal-img" loading="lazy">
+        <div class="featured-meal-info">
+          <div>
+            <h4 class="featured-meal-title">${meal.name}</h4>
+            <p class="featured-meal-desc">${meal.description}</p>
+          </div>
+          <div class="featured-meal-stats">
+            <div class="featured-macro-pills">
+              <span class="macro-p-pill">${meal.protein}g P</span>
+              <span>&bull;</span>
+              <span class="macro-c-pill">${meal.carbs}g C</span>
+              <span>&bull;</span>
+              <span class="macro-f-pill">${meal.fat}g F</span>
+            </div>
+            <button class="featured-add-btn" data-meal-id="${meal.id}">+ Log (${meal.calories}k)</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    // Handle 1-Click Logging from Featured Meals
+    featuredMealsContainer.addEventListener('click', (e) => {
+      const btn = e.target.closest('.featured-add-btn');
+      if (!btn) return;
+      const mealId = btn.getAttribute('data-meal-id');
+      const meal = featuredMeals.find(m => m.id === mealId);
+      if (meal) {
+        store.addFood(meal.defaultMeal, {
+          name: meal.name,
+          calories: meal.calories,
+          protein: meal.protein,
+          carbs: meal.carbs,
+          fat: meal.fat
+        });
+        closeModal();
+        updateDashboard();
       }
     });
   }
@@ -79,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMeals();
   }
 
-  // Render Meals
+  // Render Meals Timeline
   function renderMeals() {
     ['breakfast', 'lunch', 'dinner', 'snacks'].forEach(mealType => {
       const listEl = document.getElementById(`${mealType}-list`);
@@ -101,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
               <div style="display:flex; align-items:center; gap:0.6rem;">
                 <span class="food-calories">${item.calories} kcal</span>
-                <button class="delete-food-btn" data-meal="${mealType}" data-id="${item.id}" style="border:none;background:none;color:#94A3B8;cursor:pointer;font-size:1rem;">&times;</button>
+                <button class="delete-food-btn" data-meal="${mealType}" data-id="${item.id}" title="Delete entry" style="border:none;background:none;color:#94A3B8;cursor:pointer;font-size:1rem;">&times;</button>
               </div>
             </div>
           `).join('');
@@ -112,13 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateDashboard();
 
-  // Water Quick Add
+  // Water Quick Add (+250 ml glass)
   addWaterBtn?.addEventListener('click', () => {
     store.addWater(250);
     updateDashboard();
   });
 
-  // Food Deletion
+  // Food Deletion & Food Modal Trigger
   document.addEventListener('click', (e) => {
     const delBtn = e.target.closest('.delete-food-btn');
     if (delBtn) {
@@ -126,21 +174,30 @@ document.addEventListener('DOMContentLoaded', () => {
       const id = delBtn.getAttribute('data-id');
       store.removeFood(meal, id);
       updateDashboard();
+      return;
     }
 
     const addBtn = e.target.closest('.add-food-btn');
     if (addBtn) {
       activeTargetMeal = addBtn.getAttribute('data-meal');
-      document.getElementById('modal-meal-title').textContent = activeTargetMeal.toUpperCase();
+      const titleEl = document.getElementById('modal-meal-title');
+      if (titleEl) titleEl.textContent = activeTargetMeal.toUpperCase();
       modalOverlay?.classList.add('open');
       foodModal?.classList.add('open');
     }
+  });
+
+  // Featured Modal Open Trigger
+  openFeaturedModalBtn?.addEventListener('click', () => {
+    modalOverlay?.classList.add('open');
+    featuredModal?.classList.add('open');
   });
 
   // Modal Closers
   function closeModal() {
     modalOverlay?.classList.remove('open');
     foodModal?.classList.remove('open');
+    featuredModal?.classList.remove('open');
   }
 
   document.querySelectorAll('.modal-close, #modal-overlay').forEach(el => {
@@ -163,10 +220,58 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDashboard();
   });
 
-  // Frame toggle
+  // Toggle Mobile Frame vs Desktop Fullscreen Mode
   frameToggleBtn?.addEventListener('click', () => {
     appStage?.classList.toggle('fullscreen-mode');
     const isFull = appStage?.classList.contains('fullscreen-mode');
     frameToggleBtn.textContent = isFull ? '📱 Switch to Phone Mockup' : '🖥️ Switch to Fullscreen';
+  });
+
+  // Right-Click Context Menu Implementation (User Rule Compliance)
+  const contextMenu = document.getElementById('custom-context-menu');
+  window.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    if (!contextMenu) return;
+    contextMenu.style.left = `${Math.min(e.clientX, window.innerWidth - 180)}px`;
+    contextMenu.style.top = `${Math.min(e.clientY, window.innerHeight - 180)}px`;
+    contextMenu.classList.add('open');
+  });
+
+  window.addEventListener('click', () => {
+    contextMenu?.classList.remove('open');
+  });
+
+  contextMenu?.addEventListener('click', async (e) => {
+    const item = e.target.closest('.context-menu-item');
+    if (!item) return;
+    const action = item.getAttribute('data-action');
+    try {
+      if (action === 'copy') {
+        const sel = window.getSelection()?.toString();
+        if (sel) await navigator.clipboard.writeText(sel);
+      } else if (action === 'paste') {
+        const text = await navigator.clipboard.readText();
+        const active = document.activeElement;
+        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+          active.value += text;
+        }
+      } else if (action === 'cut') {
+        const active = document.activeElement;
+        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+          await navigator.clipboard.writeText(active.value);
+          active.value = '';
+        }
+      } else if (action === 'selectall') {
+        const active = document.activeElement;
+        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+          active.select();
+        } else {
+          document.execCommand('selectAll');
+        }
+      }
+    } catch {
+      // Clipboard permissions fallback
+    }
+    contextMenu.classList.remove('open');
   });
 });

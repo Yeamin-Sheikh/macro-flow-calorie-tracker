@@ -1,0 +1,26 @@
+{
+  "appName": "MacroFlow Mobile",
+  "version": "1.2.0",
+  "userProfile": {
+    "targetCalories": 2200,
+    "macros": {
+      "proteinGrams": 160,
+      "carbsGrams": 220,
+      "fatGrams": 65
+    },
+    "macroRatio": {
+      "proteinPercent": 30,
+      "carbsPercent": 45,
+      "fatPercent": 25
+    },
+    "dailyWaterGoalMl": 2500,
+    "glassSizeMl": 250
+  },
+  "preferences": {
+    "theme": "dark",
+    "displayUnits": "metric",
+    "compactTimeline": false,
+    "hapticFeedback": true,
+    "showMacroPercentages": true
+  }
+}

@@ -38,6 +38,17 @@
           <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">DAILY GOAL</span>
         </div>
 
+        <!-- Hero Inspiration Card -->
+        <div class="dash-hero-card" style="background-image: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.75)), url('assets/images/hero.jpg');">
+          <div class="hero-card-content">
+            <span class="hero-badge">Smart Nutrition & Macros</span>
+            <h3 class="hero-card-title">Hit your daily macro targets with precision</h3>
+            <button id="open-featured-modal-btn" class="hero-action-btn">
+              <span>🥗 Quick Log Chef Meals</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Calorie Ring Gauge -->
         <div class="gauge-container">
           <div class="ring-wrap">
@@ -158,9 +169,9 @@
   <!-- Modal Overlay -->
   <div id="modal-overlay" class="modal-overlay"></div>
 
-  <!-- Food Logging Modal -->
-  <div id="food-modal" class="modal-box" style="display: none; position: fixed; z-index: 301;">
-    <button class="modal-close">&times;</button>
+  <!-- Food Logging Modal (No broken inline style="display: none") -->
+  <div id="food-modal" class="modal-box">
+    <button class="modal-close" id="food-modal-close" aria-label="Close modal">&times;</button>
     <h3 style="font-size: 1.3rem; margin-bottom: 0.25rem;">Log Food to <span id="modal-meal-title" style="color:var(--flame);">MEAL</span></h3>
     <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Select from verified nutrition database or enter custom values.</p>
 
@@ -200,6 +211,36 @@
         Add to Food Diary
       </button>
     </form>
+  </div>
+
+  <!-- Featured Chef Meals Modal -->
+  <div id="featured-modal" class="modal-box">
+    <button class="modal-close" id="featured-modal-close" aria-label="Close modal">&times;</button>
+    <h3 style="font-size: 1.3rem; margin-bottom: 0.25rem; color: #FFFFFF;">Curated Macro Chef Meals</h3>
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem;">Verified macro profiles. Log straight to your diary with 1 click.</p>
+
+    <div class="featured-meals-grid" id="featured-meals-container"></div>
+  </div>
+
+  <!-- Custom Right-Click Context Menu -->
+  <div id="custom-context-menu" class="custom-context-menu" role="menu">
+    <div class="context-menu-item" data-action="cut">
+      <span>Cut</span>
+      <span style="font-size: 0.75rem; color: var(--text-muted);">Ctrl+X</span>
+    </div>
+    <div class="context-menu-item" data-action="copy">
+      <span>Copy</span>
+      <span style="font-size: 0.75rem; color: var(--text-muted);">Ctrl+C</span>
+    </div>
+    <div class="context-menu-item" data-action="paste">
+      <span>Paste</span>
+      <span style="font-size: 0.75rem; color: var(--text-muted);">Ctrl+V</span>
+    </div>
+    <div class="context-menu-divider"></div>
+    <div class="context-menu-item" data-action="selectall">
+      <span>Select All</span>
+      <span style="font-size: 0.75rem; color: var(--text-muted);">Ctrl+A</span>
+    </div>
   </div>
 
   <div style="display: none;">

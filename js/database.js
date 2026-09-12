@@ -1,7 +1,8 @@
 /**
- * Nutrition Database
- * Values per standard serving.
+ * Nutrition Database & Curated Featured Meals
+ * Standard verified portion values per serving.
  */
+
 export const foodDatabase = [
   { id: 'f-salmon', name: 'Atlantic Salmon Fillet (200g)', calories: 416, protein: 45, carbs: 0, fat: 26, serving: '200g' },
   { id: 'f-chicken', name: 'Grilled Chicken Breast (150g)', calories: 247, protein: 46, carbs: 0, fat: 5, serving: '150g' },
@@ -13,4 +14,29 @@ export const foodDatabase = [
   { id: 'f-whey', name: 'Whey Protein Isolate (1 scoop)', calories: 120, protein: 25, carbs: 2, fat: 1, serving: '30g' },
   { id: 'f-sweetpotato', name: 'Baked Sweet Potato (Medium)', calories: 103, protein: 2, carbs: 24, fat: 0, serving: '114g' },
   { id: 'f-almonds', name: 'Raw Almonds (1 oz)', calories: 164, protein: 6, carbs: 6, fat: 14, serving: '28g' }
+];
+
+export const featuredMeals = [
+  {
+    id: 'meal-power-bowl',
+    name: 'Macro Fuel Power Bowl',
+    image: 'meal-healthy-bowl.jpg',
+    description: 'Grilled herb chicken breast, fluffy quinoa, hass avocado, steamed broccoli, and toasted sesame.',
+    calories: 580,
+    protein: 48,
+    carbs: 45,
+    fat: 18,
+    defaultMeal: 'lunch'
+  },
+  {
+    id: 'meal-protein-oats',
+    name: 'Berry Protein Super Oats',
+    image: 'meal-berry-oatmeal.jpg',
+    description: 'Slow-rolled oats steeped with whey protein isolate, fresh blackberries, blueberries, and chia seeds.',
+    calories: 420,
+    protein: 32,
+    carbs: 52,
+    fat: 9,
+    defaultMeal: 'breakfast'
+  }
 ];

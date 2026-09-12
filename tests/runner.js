@@ -1,5 +1,7 @@
 import assert from 'node:assert';
-import { foodDatabase } from '../js/database.js';
+import fs from 'node:fs';
+import path from 'node:path';
+import { foodDatabase, featuredMeals } from '../js/database.js';
 import { calculateNutritionSummary } from '../js/calculator.js';
 import { TrackerStore } from '../js/tracker-store.js';
 
@@ -21,7 +23,12 @@ assert.strictEqual(foodDatabase.length, 10, 'Should have 10 default verified foo
 const salmon = foodDatabase.find(f => f.id === 'f-salmon');
 assert.ok(salmon);
 assert.strictEqual(salmon.protein, 45);
-console.log('✓ Food database loaded and verified');
+
+assert.strictEqual(featuredMeals.length, 2, 'Should have 2 featured meal bundles');
+const powerBowl = featuredMeals.find(m => m.id === 'meal-power-bowl');
+assert.ok(powerBowl);
+assert.strictEqual(powerBowl.protein, 48);
+console.log('✓ Food database and featured meal recipes loaded and verified');
 
 // Test 2: Nutrition Calculation
 const consumed = { calories: 1500, protein: 120, carbs: 150, fat: 45 };
@@ -67,4 +74,19 @@ const totalsFinal = store.getTotals();
 assert.strictEqual(totalsFinal.consumed.calories, totalsBefore.consumed.calories);
 console.log('✓ Food item removal verified');
 
-console.log('\nAll MacroFlow Calorie Tracker tests passed successfully! (5/5)');
+// Test 6: Image assets verification
+const imagesDir = path.resolve('assets/images');
+assert.ok(fs.existsSync(path.join(imagesDir, 'hero.jpg')), 'hero.jpg must exist');
+assert.ok(fs.existsSync(path.join(imagesDir, 'meal-healthy-bowl.jpg')), 'meal-healthy-bowl.jpg must exist');
+assert.ok(fs.existsSync(path.join(imagesDir, 'meal-berry-oatmeal.jpg')), 'meal-berry-oatmeal.jpg must exist');
+console.log('✓ High-resolution food and meal photography assets verified');
+
+// Test 7: Config validation
+const configPath = path.resolve('config.json');
+assert.ok(fs.existsSync(configPath), 'config.json must exist');
+const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+assert.strictEqual(config.appName, 'MacroFlow Mobile');
+assert.strictEqual(config.userProfile.targetCalories, 2200);
+console.log('✓ Configuration file and user targets verified');
+
+console.log('\nAll MacroFlow Calorie Tracker tests passed successfully! (7/7)');
